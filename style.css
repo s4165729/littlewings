@@ -1,0 +1,93 @@
+/*little wings styling, this file controls the visual design of
+the simple tolders game, such as colours, fonts, buttons, layout and simple animations :)*/
+
+/*colours, fonts and simple design settings*/
+
+:root {
+    --base: #151a45;
+    --ink: #eaf0ff;
+    --ink2: #c6cff0;
+
+    --panel: rgba(20, 18, 50, 0.62);
+    --line: rgba(180, 190, 255, 0.32);
+
+    --btn-bg: linear-gradient(135deg, #5b6cff, #c06cff);
+    --btn-ink: #ffffff;
+    --btn-border: 1pix solid rgba(0, 0, 10, 0.45);
+    --gear-bg: rgba(20, 18, 50, 0.55);
+
+    --chip-on: #9fb4ff;
+    --chip-on-ink: #10153a;
+
+    --accent: #9fb4ff;
+    --focus: #ffffff;
+
+    --radius: 22px;
+    --bw: 1px;
+    --title-track: 0.04em;
+
+    --font: "Quicksand", ui-rounded, system-ui, -apple-system, 
+    "Seogoe UI", sans-serif;
+
+    --title-font: "Itim", cursive;
+}
+
+/*basic page setup*/
+* {
+    box-sizing: border-box;
+}
+
+/*hide anything that has the hidden attribute*/
+[hidden] {
+    display: none !important;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: var(--base);
+    color: var(--ink);
+    font-family: var(--font);
+    overflow: hidden;
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+/*full screen game canvas*/
+#stage {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+/*hide the cursor when in play mode*/
+#stage.playing {
+    cursor: none;
+}
+
+/*text for screen readers*/
+.sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/*general button styling*/
+button {
+    
+}

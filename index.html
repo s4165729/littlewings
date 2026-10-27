@@ -92,5 +92,22 @@ it seems like it is flying-->
     </div>
     <h2>Scale</h2>
     <div class="scales">
-        <button class="chip active"
+        <button class="chip active" type="button" data-scale="pentatonic">Pentationic</button>
+        <button class="chip" type="button" data-scale="major">Major</button>
+        <button class="chip" type="button" data-scale="minor">Minor</button>
+        <button class="chip" type="button" data-scale="dorian">Dorian</button>
+        <button class="chip" type="button" data-scale="dreamy">Dreamy</button>
     </div>
+</div>
+
+<div class="row">
+    <span>Stars collected</span>
+    <button id="clearSrars" class="chip" type="button">Start over</button>
+</div>
+</div>
+
+<!--tone js makes the sound and the cloud notes and pianooo-->
+<script src="https://unpkg.com/tone@14.7.77//build/Tone.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

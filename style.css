@@ -253,7 +253,7 @@ button {
     top: 0;
     z-index: 2;
     width: calc(var(--size, 150px) * 1.2);
-    transofrm: translate(var(--x), var(--y)) translate(-50%, -50%) 
+    transform: translate(var(--x), var(--y)) translate(-50%, -50%) 
     rotate(var(--tilt)) scaleX(var(--flip));
     filter: drop-shadow(0 0 12px #9fb4ff);
 }

@@ -439,10 +439,6 @@ if (window.Tone) {
 
                 if (mode === 'intro' || event.target.closest('button, input')) return; 
 
-
-if (mode === 'intro' || event.target.closest('button, input')) return;
-
-
   if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown', 'a', 'd', 'w', 's'].includes(key)) {
 
     keysDown.add(key);

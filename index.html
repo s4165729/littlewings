@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
+<body>
 <!--the sky everything user will fly in-->
 <div id="sky" class="sky" role="img"
 aria-label="A sky with eight sleepy clouds, fly the little plane close to a cloud to wake it it up and it sing">
@@ -47,7 +48,7 @@ it seems like it is flying-->
     <div class="halo"></div>
     <img class="puffs" src="images/cloud.png" alt="">
     <b class="letter"></b>
-    <svg class="ring" viewBow="-50 -50 100 100" aria-hidden="true">
+    <svg class="ring" viewBox="-50 -50 100 100" aria-hidden="true">
         <circle class="progress" r="45" pathLength="1"/>
         <circle class="hint" r="45"/>
     </svg>
@@ -99,12 +100,10 @@ it seems like it is flying-->
         <button class="chip" type="button" data-scale="dorian">Dorian</button>
         <button class="chip" type="button" data-scale="dreamy">Dreamy</button>
     </div>
-</div>
 
 <div class="row">
     <span>This round</span>
     <button id="restart" class="chip" type="button">Restart</button>
-</div>
 </div>
 
 <div class="row">
@@ -114,7 +113,7 @@ it seems like it is flying-->
 </div>
 
 <!--tone js makes the sound and the cloud notes and pianooo-->
-<script src="https://unpkg.com/tone@14.7.77//build/Tone.js"></script>
+<script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

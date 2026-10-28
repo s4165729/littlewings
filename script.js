@@ -611,3 +611,5 @@ plane.x = plane.targetX = width / 2;
 plane.y = plane.targetY = height * 0.55;
 
 requestAnimationFrame(frame);
+ };
+    

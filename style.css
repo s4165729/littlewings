@@ -390,5 +390,83 @@ button {
 }
 
 .play {
-    
+    position: absolute;
+    left: 50%;
+    top: 78%;
+    transform: translate(-50%, 0);
+    width: clamp(112px, 28vmin, 148px);
+    height: clamp(112px, 28vmin, 148px);
+    padding: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #102b91;
+    box-shadow: 0 8px 24px rgba(16, 43, 145, 0.25);
+    transition: transform 0.15s ease;
+    animation: breathe 2.4s ease-in-out infinite;
 }
+
+.play svg {
+    width: 24px;
+    height: 24px;
+    margin-left: 3px;
+    fill: currentColor;
+}
+
+.play span {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.play:hover {
+    transform: translate(-50%, 0) scale(1.06);
+}
+
+.play:active {
+    transform: translate(-50%, 0) scale(0.96);
+}
+
+@keyframes breathe {
+    50% {
+        transform: translate(-50%, 0) scale(1.05);
+    }
+}
+
+/*play again button*/
+.again {
+    position: fixed; 
+    left: 50%;
+    top: 46%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.6em 1.4em 0.6em 1.1em;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 999px;
+    background: linear-gradient(135deg, #5b6cff, #c06cff);
+    color: #ffffff;
+    box-shadow: 0 8px 26px rgba(130, 100, 255, 0.5);
+    animation: rise 0.5s ease-out both;
+}
+
+.again:active {
+    transform: translateX(-50%) scale(0.97);
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 16px);
+    }
+}
+
+/*settings gear and pannel*/

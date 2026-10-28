@@ -109,5 +109,26 @@ button {
  }
 
  .sun::before {
+    content: "";
+    position: absolute;
+    inset: -21vmin;
+    border-radius: 50%;
+    background: radial-gradient(closest-side rgba(255,200,150,0.55), rgba(
+        255,200,150,0));
+ }
+
+ .done .sunrise, 
+ .done .glow,
+ .done .sun {
+    transition-duration: 2.6s;
+    transition-timing-function: cubic-bezier(0.33,1,0.68,1);
+ }
+
+ .done .sunrise {opacity: 1;}
+ .done .glow {opacity: 0.5;}
+ .done .sun {opacity: 1; transform: translate(-50%, calc(-50% - 18vh));}
+
+ #dust i {
+    position: absolute;
     
  }

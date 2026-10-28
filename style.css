@@ -481,7 +481,7 @@ button {
     place-items: center;
     border: 1px solid var(--line);
     border-radius: 50%;
-    background: rgba((20), 18, 50, 0.55);
+    background: rgba(20, 18, 50, 0.55);
     color: var(--text);
     font-size: 26px;
     line-height: 1;

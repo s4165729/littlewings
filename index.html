@@ -41,7 +41,7 @@ it seems like it is flying-->
 </svg>
 
 <!--one cloud each cloud in the game is a copy of this-->
-<teplate id="cloudTemplate">
+<template id="cloudTemplate">
  <div class="cloud">
     <div class="halo"></div>
     <img class="puffs" src="images/cloud.png" alt="">
@@ -51,7 +51,7 @@ it seems like it is flying-->
         <circle class="hint" r="45"/>
     </svg>
  </div>  
-</teplate>
+</template>
 
 <!--buttons and settings :)-->
 <!-- welcome screen-->
@@ -101,8 +101,14 @@ it seems like it is flying-->
 </div>
 
 <div class="row">
+    <span>This round</span>
+    <button id="restart" class="chip" type="button">Restart</button>
+</div>
+</div>
+
+<div class="row">
     <span>Stars collected</span>
-    <button id="clearSrars" class="chip" type="button">Start over</button>
+    <button id="clearStars" class="chip" type="button">Start over</button>
 </div>
 </div>
 

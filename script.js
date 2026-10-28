@@ -431,7 +431,7 @@ if (window.Tone) {
             document.addEventListener('keydown', (event) => {
                 const key = event.key.toLowerCase();
 
-                if (key === 'escape' && !panel.hidden) {
+             {
                     togglePanel(false);
                     gearButton.focus();
                     return;
@@ -619,6 +619,5 @@ plane.x = plane.targetX = width / 2;
 plane.y = plane.targetY = height * 0.55;
 
 requestAnimationFrame(frame);
-};
 
     

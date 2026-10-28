@@ -336,7 +336,7 @@ if (window.Tone) {
             if (c.hover >= 1) wakeCloud(c);
         }
 
-            let showLetter = clamp(1 - (c.distance - c.radius) / (c,radius * 0.9), 0, 1);
+            let showLetter = clamp(1 - (c.distance - c.radius) / (c.radius * 0.9), 0, 1);
             if (c.awake) showLetter = 1;
 
             setVars(c.element, {
@@ -431,7 +431,7 @@ if (window.Tone) {
             document.addEventListener('keydown', (event) => {
                 const key = event.key.toLowerCase();
 
-             {
+             if (key === 'escape' && !panel.hidden) {
                     togglePanel(false);
                     gearButton.focus();
                     return;

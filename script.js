@@ -60,7 +60,7 @@ function setVars(element, vars) {
     for (const name in vars) element.style.setProperty('--' + name, vars[name]);
 }
 
-const say = (message) => { statusLine.textContent = message; };
+const say = (message) => { statusLine.textContent = message; $('tip').textContent = message; };
 
 for (let i = 0; i < 60; i++) {
     const dot = document.createElement('i');

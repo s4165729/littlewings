@@ -11,7 +11,7 @@ const CLOUD_SIZE = 0.075;
 const PLANE_SIZE = 0.072;
 const CLOUD_HUES = [200, 255, 250, 275, 300, 330];
 const TRAIL_COLOR = 'rgba(210, 222, 255, 0.6)';
-const STAR = '<svg viewBox=0 0 24 24"><use href="#star"/></svg>';
+const STAR = '<svg viewBox="0 0 24 24"><use href="#star"/></svg>';
 
 const $ = (id) => document.getElementById(id);
 const sky = $('sky');
@@ -26,9 +26,9 @@ const soundButton = $('soundBtn');
 const volumeSlider = $('volume');
 const statusLine = $('status');
 
-$('stars').innerHTML = ('div class="slot">' + STAR + '</div>').repeat(COUNT);
+$('stars').innerHTML = ('<div class="slot">' + STAR + '</div>').repeat(COUNT);
 const slots = [...$('stars').children];
-const reduceMotion = window.matchMedia('(prefers-reduce-motion: reduce)').matches;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let width = 0;
 let height = 0;
@@ -64,12 +64,12 @@ const say = (message) => { statusLine.textContent = message; };
 
 for (let i = 0; i < 60; i++) {
     const dot = document.createElement('i');
-    setVars(dot, { x: rand(0, 100) + '%', size: rand(1.2, 4) + 'px', time: rand(15, 50) + 's', deplay: -rand(0, 50) + 's' });
+    setVars(dot, { x: rand(0, 100) + '%', size: rand(1.2, 4) + 'px', time: rand(15, 50) + 's', delay: -rand(0, 50) + 's' });
     $('dust').append(dot);
 }
 
 function buildClouds() {
-    document.querySelectorAll('.cloud').forEach((element) => elememt.remove());
+    document.querySelectorAll('.cloud').forEach((element) => element.remove());
     const spots = [];
     while (spots.length < COUNT) {
         let best = null;
@@ -153,9 +153,9 @@ if (window.Tone) {
     echo = new Tone.Reverb({decay: 2.6, wet: ECHO_AMOUNT }).toDestination();
 
     piano = new Tone.Sampler({
-        urls: { C4: 'C4.mp3', 'D#4' : 'Ds4.mp3', 'F#4': 'Fs4.mp3', A4: 'A4.pm3'},
+        urls: { C4: 'C4.mp3', 'D#4' : 'Ds4.mp3', 'F#4': 'Fs4.mp3', 'A4': 'A4.mp3'},
         release: 1,
-        baseUrl: 'https://tonejs.github.io/audio/salamnder/'
+        baseUrl: 'https://tonejs.github.io/audio/salamander/'
     }).connect(echo);
     }
 
@@ -174,7 +174,7 @@ if (window.Tone) {
 
             applyVolume();
         } catch (error) {
-            console,warn('Sound could not start:', error);
+            console.warn('Sound could not start:', error);
         }
     }
 
@@ -236,7 +236,7 @@ if (window.Tone) {
 
         say('You found every note, watch the sky glow and explore for a little while');
 
-        againTimer = setTimeout(() => { againButton.hidden = false; }, 6500);
+        againtTimer = setTimeout(() => { againButton.hidden = false; }, 6500);
     }
 
     function tapAt(x, y) {
@@ -326,7 +326,7 @@ if (window.Tone) {
             c.x = (c.homeX + c.driftX * Math.sin(clock * c.speedX + c.phaseX)) * width;
             c.y = (c.homeY + c.driftY * Math.sin(clock * c.speedY + c.phaseY)) * height;
             c.radius = Math.min(width, height) * CLOUD_SIZE * c.sizeFactor;
-            c.dex = c.x - plane.x;
+            c.dx = c.x - plane.x;
             c.distance = Math.hypot(c.dx, c.y - plane.y);
             c.closeness = clamp(1 - c.distance / hearRadius, 0, 1);
             
@@ -354,7 +354,7 @@ if (window.Tone) {
 
     function sparkle({ x, y, vx, vy, life, size, color, shape }){
         const element = document.createElement('div');
-        element.className = 'sparkle' + shape;
+        element.className = 'sparkle ' + shape;
         if (shape === 'star') element.innerHTML = STAR;
         setVars(element, { size: (shape === 'star' ? size * 2 : size * 1.2) + 'px', 
             color: color });
@@ -393,7 +393,7 @@ if (window.Tone) {
             const box = slots[slot].getBoundingClientRect();
             const toX = box.left + box.width / 2;
             const toY = box.top + box.height / 2;
-            const at = (x, y, scale) => ({ transform: 'translate(' + x + 'px, ' + y + ' px) scale(' + scale + ')' });
+            const at = (x, y, scale) => ({ transform: 'translate(' + x + 'px, ' + y + 'px) scale(' + scale + ')' });
 
             element.animate([
                 at(from.x, from.y, 1.2),

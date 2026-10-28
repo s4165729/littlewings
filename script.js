@@ -293,4 +293,357 @@ if (window.Tone) {
 
      plane.x = newX;
      plane.y = newY; 
-     
+     plane.speed = Math.hypot(speedX, speedY);
+     if (Math.abs(speedX) > 40) plane.direction = speedX > 0 ? 1 : -1;
+     plane.tilt += (clamp(speedY * 0.03, -20, 20) - plane.tilt) * 0.15;
+     if (mode !== 'intro') {
+        setVars(planeImage, {
+            x: plane.x +'px',
+            y: plane.y + 'px', 
+            flip: -plane.direction,
+            tilt: plane.direction * plane.tilt + 'deg'
+        });
+     }
+
+     if (!reduceMotion && mode === 'play' && plane.speed > 80 && clock - lastTrailTime > 30) {
+        lastTrailTime = clock;
+        sparkle({
+            x: plane.x - plane.direction * planeWidth() * 0.42, y: plane.y, 
+            vx: -plane.direction * 0.01, vy: -0.01, 
+            life: 600, size: 4 + Math.random() * 3,
+            color: TRAIL_COLOR, shape: 'dot'
+        });
+     }
+    }
+
+    function updateCloud(dt) {
+        const hearRadius = HEAR_RANGE * Math.max(width, height);
+
+        for (const c of clouds) {
+            c.x = (c.homeX + c.driftX * Math.sin(clock * c.speedX + c.phaseX)) * width;
+            c.y = (c.homeY + c.diftY * Math.sin(clock * c.speedY + c.phaseY)) * height;
+            c.radius = Math.min(width, height) * CLOUD_SIZE * c.sizeFactor;
+            c.dex = c.x - plane.x;
+            c.distance = Math.hypot(c.dx, c.y - plane.y);
+            c.closeness = clamp(1 - c.distance / hearRadius, 0, 1);
+            
+            let showLetter = clamp(1 - (c.distance - c.radius) / (c,radius * 0.9), 0, 1);
+            if (c.awake) showLetter = 1;
+
+            setVars(c.element, {
+                x:c.x + 'px',
+                y: c.y + 'px', 
+                r: c.radius + 'px', 
+                glow: c.closeness,
+                letter: showLetter,
+                hover: c.hover
+            });
+            c.element.classList.toggle('hinted', c === hintCloud);
+            humCloud(c);
+        }
+    }
+
+    function sparkle({ x, y, vx, vy, life, size, color, shape }){
+        const element = document.createElement('div');
+        element.className = 'sparkle' + shape;
+        if (shape === 'star') element.innerHTML = STAR;
+        setVars(element, { size: (shape === 'star' ? size * 2 : size * 1.2) + 'px', 
+            color: color });
+            sky.append(element);
+
+            const at = (t) => 'translate(' + (x + vx * life * t) 'px, ' + (y + vy * life * t + 0.00006 * (life * t) ** 2) + 'px)';
+            
+            element.animate([
+                {transform: at(0), opacity: 0.9 },
+                {transform: at(0.5) },
+                { transform: at(1), opacity: 0}
+            ], life).onfinish = () => element.remove();
+        }
+
+        function burst(x, y, radius, color, count, shape) {
+            for (let i = 0; i < count; i++) {
+                const angle = rand(0, CIRCLE);
+                const speed = rand(0.05, 0.22) * (radius / 60 + 0.6);
+
+                sparkle({
+                    x: x, y: y, 
+                    vx: Math.cos(angle) * speed,  
+                    vy: Math, sin(angle) * speed - 0.06, 
+                    life: rand(700, 1200), size: rand(5, 11), 
+                    color: color, shape: shape || (I % 2 ? 'star' : 'dot')
+                });
+            }
+        }
+
+        function flyStar(from, slot) {
+            const element = document.createElement('div');
+            element.className = 'flying'; 
+            element.innerHTML = STAR;
+            sky.append(element);
+
+            const box = slots[slot].getBoundingClientRect();
+            const toX = box.left + box.width / 2;
+            const toY = box.top + box.height / 2;
+            const at = (x, y, scale) => ({ transform: 'translate(' + x + 'px, ' + y + ' px) scale(' + scale + ')' });
+
+            element.animate([
+                at(from.x, from.y, 1.2),
+                at((from.x + toX) / 2, (from.y + toY) / 2 - height * 0.08, 1.1),
+                at (toX, toY, 1)
+            ], { duration: 800, easing: 'ease-out'. fill: 'forwards' }).onfinish = () => {
+                element.remove();
+                slots[slot].classList.add('filled');
+                savedStars++;
+                try { localStorage.setItem('little-wings-stars', String(savedStars)); } catch (e) {
+                }; 
+            }
+
+            sky.addEventListener('pointermove', (event) => {
+                if (mode === 'intro') return;
+                plane.targetX = event.clientX;
+                plane.targetY = event.clientY;
+            });
+
+            sky.addEventListener('pointerdown', (event) => {
+                if (mode == 'intro') return;
+                plane.targetX = event.clientX;
+                plane.targetY = event.clientY;
+
+                if (event.pointerType !== 'mouse') {
+                    plane.x = event.clientX;
+                    plane.y = event.clientY;
+                }
+                tapAt(event.clientX, event.clientY);
+            });
+
+            sky.addEventListener('contextmenu', (event) => event.preventDefault());
+
+            document.addEventListener('keydown', (event) => {
+                const key = event.key.toLowerCase();
+
+                if (key === 'escape' && !panel.hidden) {
+                    togglePanel(false);
+                    gearButton.focus();
+                    return;
+                }
+
+                if (mode === 'intro' || event.target.closest('button, input')) return; 
+
+
+if (mode === 'intro' || event.target.closest('button, input')) return;
+
+ 
+
+  if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown', 'a', 'd', 'w', 's'].includes(key)) {
+
+    keysDown.add(key);
+
+    event.preventDefault();
+
+  } else if (key === ' ' || key === 'enter') {
+
+    // Space or Enter wakes the nearest cloud if the plane is close to it
+
+    event.preventDefault();
+
+    const cloud = nearestSleepingCloud(plane.x, plane.y, Infinity);
+
+    if (cloud && cloud.distance < cloud.radius * 2.2) wakeCloud(cloud);
+
+  }
+
+});
+
+ 
+
+document.addEventListener('keyup', (event) => keysDown.delete(event.key.toLowerCase()));
+
+window.addEventListener('blur', () => keysDown.clear());     // let go of keys if the window loses focus
+
+ 
+
+// Keep the plane in the same place on screen when the window changes size
+
+function resize() {
+
+  const oldWidth = width;
+
+  const oldHeight = height;
+
+ 
+
+  width = window.innerWidth;
+
+  height = window.innerHeight;
+
+  setVars(planeImage, { size: planeWidth() + 'px' });
+
+ 
+
+  if (oldWidth) {
+
+    plane.x *= width / oldWidth;
+
+    plane.targetX *= width / oldWidth;
+
+    plane.y *= height / oldHeight;
+
+    plane.targetY *= height / oldHeight;
+
+  }
+
+}
+
+window.addEventListener('resize', resize);
+
+ 
+
+// Hush the sound while you are on another tab
+
+document.addEventListener('visibilitychange', applyVolume);
+
+ 
+
+// "Let's fly!": start the sound, hide the welcome screen and begin
+
+playButton.addEventListener('click', async () => {
+
+  await startAudio();
+
+  playWelcomeChime();
+
+  introScreen.classList.add('gone');
+
+  newRound();
+
+ 
+
+  plane.x = plane.targetX = width * 0.5;
+
+  plane.y = plane.targetY = height * 0.56;
+
+});
+
+ 
+
+// "Again!": another round
+
+againButton.addEventListener('click', newRound);
+
+ 
+
+// Settings panel
+
+function togglePanel(open) {
+
+  panel.hidden = !open;
+
+  gearButton.setAttribute('aria-expanded', String(open));
+
+}
+
+ 
+
+gearButton.addEventListener('click', () => togglePanel(panel.hidden));
+
+ 
+
+soundButton.addEventListener('click', () => {
+
+  soundOn = !soundOn;
+
+  soundButton.setAttribute('aria-pressed', String(soundOn));
+
+  soundButton.textContent = soundOn ? 'On' : 'Off';
+
+  applyVolume();
+
+  playWelcomeChime();
+
+});
+
+ 
+
+volumeSlider.addEventListener('input', () => {
+
+  volume = Number(volumeSlider.value);
+
+  applyVolume();
+
+});
+
+ 
+
+$('restart').addEventListener('click', () => {
+
+  togglePanel(false);
+
+  if (mode !== 'intro') newRound();
+
+});
+
+ 
+
+$('clearStars').addEventListener('click', () => {
+
+  savedStars = 0;
+
+  try { localStorage.removeItem('little-wings-stars'); } catch (e) { /* ignore */ }
+
+});
+
+ 
+
+// Scale buttons: highlight the one you pick
+
+const scaleButtons = document.querySelectorAll('[data-scale]');
+
+scaleButtons.forEach((button) => {
+
+  button.addEventListener('click', () => {
+
+    scaleButtons.forEach((other) => other.classList.toggle('active', other === button));
+
+  });
+
+});
+
+ 
+
+ 
+
+// ---------- 11. START ----------
+
+ 
+
+let lastFrameTime = performance.now();
+
+ 
+
+// Runs about 60 times a second
+
+function frame(now) {
+
+  const dt = Math.min(64, now - lastFrameTime);     // capped so a pause does not cause a jump
+
+  lastFrameTime = now;
+
+  clock = now;
+
+ 
+
+  update(dt);
+
+  requestAnimationFrame(frame);
+
+}
+
+ 
+
+resize();
+
+plane.x = plane.targetX = width / 2;
+
+plane.y = plane.targetY = height * 0.55;
+
+requestAnimationFrame(frame);

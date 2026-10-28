@@ -15,9 +15,10 @@ const STAR = '<svg viewBox=0 0 24 24"><use href="#star"/></svg>';
 
 const $ = (id) => document.getElementById(id);
 const sky = $('sky');
-const planeImage = $('cloudTemplate');
-const cloudTemple = $('intro');
-const introScreen = $('play');
+const planeImage = $('plane');
+const cloudTemple = $('cloudTemplate');
+const introScreen = $('intro');
+const playButton = $('play');
 const againButton = $('again');
 const gearButton = $('gear');
 const panel = $('panel');
@@ -25,7 +26,7 @@ const soundButton = $('soundBtn');
 const volumeSlider = $('volume');
 const statusLine = $('status');
 
-$('stars').innerHTML = (<'div class="slot">' + STAR + '</div>').repeat(COUNT);
+$('stars').innerHTML = ('div class="slot">' + STAR + '</div>').repeat(COUNT);
 const slots = [...$('stars').children];
 const reduceMotion = window.matchMedia('(prefers-reduce-motion: reduce)').matches;
 
@@ -40,6 +41,7 @@ let awakeCount = 0;
 let lastWakeTime = 0;
 let hintCloud = null;
 let againtTimer = 0;
+let lastTrailTime = 0;
 let savedStars = 0;
 
 const plane = { x: 0, y: 0, targetX: 0, targetY: 0, direction: 1, tilt: 0, speed: 0 };
@@ -49,9 +51,9 @@ try {
     savedStars = parseInt(localStorage.getItem('little-wings-stars'), 10) || 0;
 }catch (e) {}
 
-const clamp = (n, min, max) => Math.min(max, Math.min(min, n));
+const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 const rand = (a, b) => a + Math.random() * (b-a);
-const cloudColor = (i) => 'hsl(' + CLOUD_HUES[I % CLOUD_HUES.length] + ', 80%, 76%)';
+const cloudColor = (i) => 'hsl(' + CLOUD_HUES[i % CLOUD_HUES.length] + ', 80%, 76%)';
 const planeWidth = () => Math.min(width, height) * PLANE_SIZE * 2.8;
 
 function setVars(element, vars) {
@@ -90,9 +92,9 @@ function buildClouds() {
             homeY: spot.y,
             driftX: rand(0.006, 0.012),
             driftY: rand(0.005, 0.01),
-            speedY: rand(0.0001, 0.0002)
-            phaseX: rand(0, CIRCLE)
-            phaseY: rand(0, CIRCLE)
+            speedY: rand(0.0001, 0.0002),
+            phaseX: rand(0, CIRCLE),
+            phaseY: rand(0, CIRCLE),
             sizeFactor: rand(0.9, 1.1),
             x: 0, 
             y: 0, 
@@ -105,7 +107,7 @@ function buildClouds() {
             element: cloudTemple.content.firstElementChild.cloneNode(true)
         };
         cloud.element.querySelector('.letter').textContent = NOTES[i][0];
-        setVars(cloud.element, { hue: CLOUD_HUES[I % CLOUD_HUES.length] });
+        setVars(cloud.element, { hue: CLOUD_HUES[i % CLOUD_HUES.length] });
         sky.append(cloud.element);
         return cloud;
     });
@@ -241,7 +243,7 @@ if (window.Tone) {
         let hitDistance = Infinity;
 
         for (const c of clouds) {
-            const d = Math.hypot(c.x, c.y - y);
+            const d = Math.hypot(c.x - x, c.y - y);
             if (d < c.radius * 1.5 && d < hitDistance) {
                 hit = c;
                 hitDistance = d;
@@ -249,7 +251,7 @@ if (window.Tone) {
         }
 
         if (!hit) {
-            burst(x, y, 30, cloudClour(Math.floor(rand(0, COUNT))), 5 'dot');
+            burst(x, y, 30, cloudClor(Math.floor(rand(0, COUNT))), 5 'dot');
             return;
         }
 
@@ -370,7 +372,7 @@ if (window.Tone) {
                     vx: Math.cos(angle) * speed,  
                     vy: Math, sin(angle) * speed - 0.06, 
                     life: rand(700, 1200), size: rand(5, 11), 
-                    color: color, shape: shape || (I % 2 ? 'star' : 'dot')
+                    color: color, shape: shape || (i % 2 ? 'star' : 'dot')
                 });
             }
         }

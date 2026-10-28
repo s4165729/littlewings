@@ -130,5 +130,25 @@ button {
 
  #dust i {
     position: absolute;
-    
+    left: var(--x);
+    top: 0;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: rgb(200. 215, 255);
+    animation: flaot var(--time) linear var(--delay) infinite, 
+    twinkle 6.3s ease-in-out var(--delay) infinite alternate;
  }
+
+ @keyframes float {
+    from { transform: translateY(102vh);}
+    to { transform: translateY(-2vh);}
+ }
+
+ @keyframes twinkle {
+    from { opacity: 0.15;}
+    to { opacity: 0.4;}
+ }
+
+ /*clouds*/
+ 

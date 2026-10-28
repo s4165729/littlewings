@@ -93,6 +93,7 @@ function buildClouds() {
             driftX: rand(0.006, 0.012),
             driftY: rand(0.005, 0.01),
             speedY: rand(0.0001, 0.0002),
+            speedX: rand(0.0001, 0.0002), 
             phaseX: rand(0, CIRCLE),
             phaseY: rand(0, CIRCLE),
             sizeFactor: rand(0.9, 1.1),
@@ -329,6 +330,12 @@ if (window.Tone) {
             c.distance = Math.hypot(c.dx, c.y - plane.y);
             c.closeness = clamp(1 - c.distance / hearRadius, 0, 1);
             
+            if (mode === 'play' && !c.awake) {
+            if (c.distance < c.radius * 1.4) c.hover = Math.min(1, c.hover + dt / WAKE_MS);
+            else c.hover = Math.max(0, c.hover - dt / WAKE_MS * 2);
+            if (c.hover >= 1) wakeCloud(c);
+        }
+
             let showLetter = clamp(1 - (c.distance - c.radius) / (c,radius * 0.9), 0, 1);
             if (c.awake) showLetter = 1;
 
@@ -398,7 +405,8 @@ if (window.Tone) {
                 savedStars++;
                 try { localStorage.setItem('little-wings-stars', String(savedStars)); } catch (e) {
                 }; 
-            }
+            };
+        }
 
             sky.addEventListener('pointermove', (event) => {
                 if (mode === 'intro') return;
@@ -611,5 +619,6 @@ plane.x = plane.targetX = width / 2;
 plane.y = plane.targetY = height * 0.55;
 
 requestAnimationFrame(frame);
- };
+};
+
     

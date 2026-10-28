@@ -251,7 +251,7 @@ if (window.Tone) {
         }
 
         if (!hit) {
-            burst(x, y, 30, cloudClor(Math.floor(rand(0, COUNT))), 5 'dot');
+            burst(x, y, 30, cloudColor(Math.floor(rand(0, COUNT))), 5, 'dot');
             return;
         }
 
@@ -353,7 +353,7 @@ if (window.Tone) {
             color: color });
             sky.append(element);
 
-            const at = (t) => 'translate(' + (x + vx * life * t) 'px, ' + (y + vy * life * t + 0.00006 * (life * t) ** 2) + 'px)';
+            const at = (t) => 'translate(' + (x + vx * life * t) + 'px, ' + (y + vy * life * t + 0.00006 * (life * t) ** 2) + 'px)';
             
             element.animate([
                 {transform: at(0), opacity: 0.9 },
@@ -370,7 +370,7 @@ if (window.Tone) {
                 sparkle({
                     x: x, y: y, 
                     vx: Math.cos(angle) * speed,  
-                    vy: Math, sin(angle) * speed - 0.06, 
+                    vy: Math.sin(angle) * speed - 0.06, 
                     life: rand(700, 1200), size: rand(5, 11), 
                     color: color, shape: shape || (i % 2 ? 'star' : 'dot')
                 });
@@ -392,7 +392,7 @@ if (window.Tone) {
                 at(from.x, from.y, 1.2),
                 at((from.x + toX) / 2, (from.y + toY) / 2 - height * 0.08, 1.1),
                 at (toX, toY, 1)
-            ], { duration: 800, easing: 'ease-out'. fill: 'forwards' }).onfinish = () => {
+            ], { duration: 800, easing: 'ease-out', fill: 'forwards' }).onfinish = () => {
                 element.remove();
                 slots[slot].classList.add('filled');
                 savedStars++;
@@ -434,7 +434,6 @@ if (window.Tone) {
 
 if (mode === 'intro' || event.target.closest('button, input')) return;
 
- 
 
   if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown', 'a', 'd', 'w', 's'].includes(key)) {
 
@@ -456,15 +455,12 @@ if (mode === 'intro' || event.target.closest('button, input')) return;
 
 });
 
- 
 
 document.addEventListener('keyup', (event) => keysDown.delete(event.key.toLowerCase()));
 
-window.addEventListener('blur', () => keysDown.clear());     // let go of keys if the window loses focus
+window.addEventListener('blur', () => keysDown.clear());  
 
- 
 
-// Keep the plane in the same place on screen when the window changes size
 
 function resize() {
 
@@ -472,7 +468,6 @@ function resize() {
 
   const oldHeight = height;
 
- 
 
   width = window.innerWidth;
 
@@ -480,7 +475,6 @@ function resize() {
 
   setVars(planeImage, { size: planeWidth() + 'px' });
 
- 
 
   if (oldWidth) {
 
@@ -498,15 +492,8 @@ function resize() {
 
 window.addEventListener('resize', resize);
 
- 
-
-// Hush the sound while you are on another tab
-
 document.addEventListener('visibilitychange', applyVolume);
 
- 
-
-// "Let's fly!": start the sound, hide the welcome screen and begin
 
 playButton.addEventListener('click', async () => {
 
@@ -518,7 +505,6 @@ playButton.addEventListener('click', async () => {
 
   newRound();
 
- 
 
   plane.x = plane.targetX = width * 0.5;
 
@@ -526,13 +512,9 @@ playButton.addEventListener('click', async () => {
 
 });
 
- 
-
-// "Again!": another round
 
 againButton.addEventListener('click', newRound);
 
- 
 
 // Settings panel
 
@@ -544,11 +526,9 @@ function togglePanel(open) {
 
 }
 
- 
 
 gearButton.addEventListener('click', () => togglePanel(panel.hidden));
 
- 
 
 soundButton.addEventListener('click', () => {
 
@@ -564,7 +544,6 @@ soundButton.addEventListener('click', () => {
 
 });
 
- 
 
 volumeSlider.addEventListener('input', () => {
 
@@ -574,7 +553,6 @@ volumeSlider.addEventListener('input', () => {
 
 });
 
- 
 
 $('restart').addEventListener('click', () => {
 
@@ -584,7 +562,6 @@ $('restart').addEventListener('click', () => {
 
 });
 
- 
 
 $('clearStars').addEventListener('click', () => {
 
@@ -593,8 +570,6 @@ $('clearStars').addEventListener('click', () => {
   try { localStorage.removeItem('little-wings-stars'); } catch (e) { /* ignore */ }
 
 });
-
- 
 
 // Scale buttons: highlight the one you pick
 
@@ -610,17 +585,8 @@ scaleButtons.forEach((button) => {
 
 });
 
- 
-
- 
-
-// ---------- 11. START ----------
-
- 
 
 let lastFrameTime = performance.now();
-
- 
 
 // Runs about 60 times a second
 
@@ -632,15 +598,11 @@ function frame(now) {
 
   clock = now;
 
- 
-
   update(dt);
 
   requestAnimationFrame(frame);
 
 }
-
- 
 
 resize();
 

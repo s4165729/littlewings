@@ -151,4 +151,143 @@ button {
  }
 
  /*clouds*/
- 
+@property --glow { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --letter { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --awake { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --flash { syntax: "<number>"; inherits: true; initial-value: 0; }
+
+.cloud {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transition: --glow 0.13s linear, --letter 0.1s linear, --awake 0.5s ease-out;
+}
+
+.cloud.awake {
+    --awake: 1;
+}
+
+/*a halo soft behind the cloud*/
+.halo {
+    position: absolute;
+    z-index: 1;
+    width: calc(var(--r) * 5.4);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: radial-gradient(closest-side, 
+    hsl(var(--hue) 85% 75% / calc(var(--letter) * (0.08 + var(--glow) * 0.22
+    + var(--awake) * 0.18 + var(--flash) * 0.2))) 11%,
+    hsl(var(--hue) 85% 75% / 0));
+}
+
+/* want the cloud picture to expand as the plane gets closer*/
+.puffs {
+    position: absolute;
+    z-index: 1;
+    width: calc(var(--r) * 5);
+    aspect-ratio: 5 / 4;
+    translate: -50% -50%;
+    transform: scale(calc(1 + var(--glow) * 0.5 + var(--flash) * 0.1));
+    opacity: var(--opacity);
+    filter: hue-rotate(calc((var(--hue) - 200) * 1deg)) saturate(calc(0.55 + var(--awake) * 0.6)) brightness(calc(0.95 + var(--awake) * 0.1));
+}
+
+.letter {
+    position: absolute;
+    z-index: 3; 
+    translate: -50% calc(-50% + var(--r) * 0.02);
+    font-size: calc(var(--r) * 0.58);
+    line-height: 1;
+    color: #f4f6ff;
+    opacity: var(--letter);
+    text-shadow: 0 0 max(8px, calc(var(--r) * 028)) hsl(var(--hue) 90% 82% / 0.85);
+}
+
+.ring {
+    position: absolute;
+    z-index: 3;
+    width: calc(var(--r) * 3.156);
+    translate: -50% -50%;
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    overflow: visible;
+}
+
+.progress {
+    rotate: -90deg;
+    stroke-dasharray: var(--hover) 1;
+    opacity: min(1. calc(var(--hover) * 50));
+}
+
+.awake .progess {
+    display: none;
+}
+
+.hint {
+    display: none;
+    stroke-width: 1.9;
+    stroke-dasharray: 5.7 6.3;
+    animation: pulse 1.05s ease-in-out infinite alternate;
+}
+
+.hinted .hint {
+    display: inline;
+}
+
+@keyframes pulse {
+    from { opacity: 0.1; }
+    to { opacity: 0.9; }
+}
+
+/*the plane script js will set the x y position sizing and flipting tilting before starts in the middle*/
+.plane {
+    --x: 50vw;
+    --y: 57vh;
+    --flip: 1;
+    --tilt: 0deg;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    width: calc(var(--size, 150px) * 1.2);
+    transofrm: translate(var(--x), var(--y)) translate(-50%, -50%) 
+    rotate(var(--tilt)) scaleX(var(--flip));
+    filter: drop-shadow(0 0 12px #9fb4ff);
+}
+
+/*starts and sparkles*/ 
+:root {
+    --start: clamp(22px, 5.5vmin, 42px);
+}
+
+/*row of eight starts at thee top*/
+.stars {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    top: calc(max(var(--star) * 1.5, 40px) - var(--star));
+    translate: -50% 0;
+    display: flex;
+    gap: calc(var(--star) * 0.5);
+}
+
+/*this row of starts only shows once game has started tho*/
+.sky:not(.playing) .stars {
+    opacity: 0;
+}
+
+.slot {
+    width: calc(var(--star) * 2);
+    aspect-ratio: 1;
+}
+
+.slot svg,
+.flying svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    
+}

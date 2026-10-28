@@ -136,7 +136,7 @@ button {
     height: var(--size);
     border-radius: 50%;
     background: rgb(200, 215, 255);
-    animation: flaot var(--time) linear var(--delay) infinite, 
+    animation: float var(--time) linear var(--delay) infinite, 
     twinkle 6.3s ease-in-out var(--delay) infinite alternate;
  }
 

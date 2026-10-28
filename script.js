@@ -279,7 +279,7 @@ if (window.Tone) {
     function movePlane(dt) {
         const keyX = (keysDown.has('arrowright') || keysDown.has('d') ? 1 : 0)
      - (keysDown.has('arrowleft') || keysDown.has('a') ? 1 : 0);
-        const keyY = z(keysDown.has('arrowdown') || keysDown.has('s') ? 1 : 0)
+        const keyY = (keysDown.has('arrowdown') || keysDown.has('s') ? 1 : 0)
      - (keysDown.has('arrowup') || keysDown.has('w') ? 1 : 0);
 
      if (keyX || keyY) {
@@ -319,12 +319,12 @@ if (window.Tone) {
      }
     }
 
-    function updateCloud(dt) {
+    function updateClouds(dt) {
         const hearRadius = HEAR_RANGE * Math.max(width, height);
 
         for (const c of clouds) {
             c.x = (c.homeX + c.driftX * Math.sin(clock * c.speedX + c.phaseX)) * width;
-            c.y = (c.homeY + c.diftY * Math.sin(clock * c.speedY + c.phaseY)) * height;
+            c.y = (c.homeY + c.driftY * Math.sin(clock * c.speedY + c.phaseY)) * height;
             c.radius = Math.min(width, height) * CLOUD_SIZE * c.sizeFactor;
             c.dex = c.x - plane.x;
             c.distance = Math.hypot(c.dx, c.y - plane.y);
